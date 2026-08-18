@@ -1,0 +1,84 @@
+{
+  "$schema": "./stack.schema.json",
+  "$doc": "The stack profile. Every path, package and command in this kit is read from here. Run /adapt to fill it in — do not hand-edit unless you know what you are changing. Reference: obsidian/architecture/stack-profile.md",
+
+  "adapted": false,
+  "adaptedAt": null,
+
+  "project": {
+    "name": null,
+    "kind": "marketing-site"
+  },
+
+  "framework": {
+    "id": null,
+    "name": null,
+    "version": null,
+    "renderModel": null
+  },
+
+  "language": "ts",
+  "packageManager": null,
+
+  "paths": {
+    "source": "src",
+    "routes": null,
+    "views": null,
+    "components": null,
+    "styles": null,
+    "assets": null,
+    "staticRoot": null,
+    "server": null,
+    "env": null,
+    "protected": [],
+    "routeEntryGlob": []
+  },
+
+  "extensions": {
+    "component": [],
+    "style": [".css"]
+  },
+
+  "bindings": {
+    "styling": null,
+    "motion": null,
+    "textMotion": null,
+    "smoothScroll": null,
+    "state": null,
+    "validation": null,
+    "image": null,
+    "link": null,
+    "router": null,
+    "metadata": null,
+    "envPublicPrefix": null
+  },
+
+  "capabilities": {
+    "ssr": null,
+    "serverComponents": null,
+    "fileRouting": null,
+    "apiRoutes": null,
+    "imageOptimization": null,
+    "metadataApi": null,
+    "islands": null
+  },
+
+  "conventions": {
+    "routesDelegateToViews": true,
+    "namedExports": true,
+    "serverFirst": true,
+    "tokenTiers": true
+  },
+
+  "commands": {
+    "install": null,
+    "dev": null,
+    "build": null,
+    "start": null,
+    "lint": null,
+    "typecheck": null,
+    "test": null
+  },
+
+  "notes": []
+}

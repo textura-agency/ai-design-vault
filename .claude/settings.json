@@ -1,0 +1,121 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/scripts/hooks/session-start.sh",
+            "statusMessage": "Loading project guide"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/scripts/hooks/user-prompt.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/scripts/hooks/stop.sh",
+            "statusMessage": "Checking vault docs are in sync"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(.claude/scripts/verify.sh:*)",
+      "Bash(.claude/scripts/detect-stack.sh)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(npm run check:*)",
+      "Bash(yarn lint)",
+      "Bash(yarn build)",
+      "Bash(yarn dev)",
+      "Bash(yarn typecheck)",
+      "Bash(pnpm lint)",
+      "Bash(pnpm build)",
+      "Bash(pnpm dev)",
+      "Bash(pnpm check)",
+      "Bash(bun run lint)",
+      "Bash(bun run build)",
+      "Bash(bun run dev)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(find:*)",
+      "Bash(file:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "WebFetch(domain:developer.mozilla.org)",
+      "WebFetch(domain:schema.org)",
+      "WebFetch(domain:tailwindcss.com)",
+      "WebFetch(domain:nextjs.org)",
+      "WebFetch(domain:svelte.dev)",
+      "WebFetch(domain:kit.svelte.dev)",
+      "WebFetch(domain:vuejs.org)",
+      "WebFetch(domain:nuxt.com)",
+      "WebFetch(domain:docs.astro.build)",
+      "WebFetch(domain:vite.dev)",
+      "WebFetch(domain:react.dev)",
+      "WebFetch(domain:reactrouter.com)",
+      "WebFetch(domain:motion.dev)",
+      "WebFetch(domain:threejs.org)"
+    ],
+    "ask": [
+      "Bash(rm:*)",
+      "Bash(rmdir:*)",
+      "Bash(mv:*)",
+      "Bash(dd:*)",
+      "Bash(chmod:*)",
+      "Bash(chown:*)",
+      "Bash(npm install:*)",
+      "Bash(npm i:*)",
+      "Bash(yarn add:*)",
+      "Bash(yarn remove:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm remove:*)",
+      "Bash(bun add:*)",
+      "Bash(npx:*)",
+      "Bash(git push:*)",
+      "Bash(git reset:*)",
+      "Bash(git checkout:*)",
+      "Bash(git commit:*)",
+      "Bash(vercel:*)",
+      "Bash(netlify:*)",
+      "Bash(wrangler:*)",
+      "Bash(supabase db push:*)",
+      "Bash(supabase db reset:*)",
+      "Bash(prisma migrate:*)",
+      "Bash(drizzle-kit push:*)",
+      "Bash(payload migrate:*)",
+      "Bash(kill:*)",
+      "Bash(killall:*)",
+      "Bash(pkill:*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.local)",
+      "Read(./.env.production)",
+      "Read(./**/*.pem)",
+      "Read(./**/*.key)"
+    ]
+  }
+}

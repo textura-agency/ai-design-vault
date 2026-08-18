@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Design Vault stack profile",
+  "description": "Describes the host project so the kit's rules, skills and verify script apply to it. Written by /adapt.",
+  "type": "object",
+  "required": ["adapted", "framework", "paths", "bindings", "commands"],
+  "properties": {
+    "adapted": { "type": "boolean", "description": "false until /adapt has run. The SessionStart hook checks this." },
+    "adaptedAt": { "type": ["string", "null"], "description": "ISO date of the last /adapt run." },
+    "project": {
+      "type": "object",
+      "properties": {
+        "name": { "type": ["string", "null"] },
+        "kind": { "enum": ["marketing-site", "product-site", "app", "docs", "portfolio", "ecommerce", "other"] }
+      }
+    },
+    "framework": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": ["string", "null"],
+          "description": "Canonical id. Known: nextjs, react-router, remix, tanstack-start, vite-react, astro, nuxt, vue-vite, sveltekit, svelte-vite, solid-start, qwik, angular, eleventy, hugo, vanilla. Anything else is allowed — record it and describe it in notes.",
+          "examples": ["nextjs", "astro", "sveltekit", "nuxt", "vite-react", "vanilla"]
+        },
+        "name": { "type": ["string", "null"] },
+        "version": { "type": ["string", "null"] },
+        "renderModel": {
+          "type": ["string", "null"],
+          "enum": ["server-components", "ssr", "ssg", "islands", "spa", "hybrid", null],
+          "description": "How the framework renders. Drives the server-first rule and the SEO/crawlability checks."
+        }
+      }
+    },
+    "language": { "enum": ["ts", "js"] },
+    "packageManager": { "type": ["string", "null"], "enum": ["npm", "yarn", "pnpm", "bun", "deno", null] },
+    "paths": {
+      "type": "object",
+      "description": "All paths are repo-relative, no leading ./ and no trailing slash. Null means the concept does not exist in this stack.",
+      "properties": {
+        "source": { "type": ["string", "null"], "description": "Root of application code, e.g. src or app." },
+        "routes": { "type": ["string", "null"], "description": "Where route/page files live, e.g. src/app, src/routes, src/pages." },
+        "views": { "type": ["string", "null"], "description": "Page-level components routes delegate to. Create it if the stack has no equivalent." },
+        "components": { "type": ["string", "null"] },
+        "styles": { "type": ["string", "null"], "description": "The single file holding design tokens." },
+        "assets": { "type": ["string", "null"], "description": "Site content assets, one folder per section." },
+        "staticRoot": { "type": ["string", "null"], "description": "Served-as-is root, e.g. public or static. Favicons/OG/manifest live here." },
+        "server": { "type": ["string", "null"], "description": "Server-side endpoints, e.g. src/app/api, src/routes/api, server/api." },
+        "env": { "type": ["string", "null"], "description": "The single validated env accessor module." },
+        "protected": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Glob paths treated as a vendored engine — verify.sh FAILs on any diff here."
+        },
+        "routeEntryGlob": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Filename patterns identifying a route entry file inside paths.routes, used by the route-delegation check. Defaults cover page.*/+page.*/index.astro. Frameworks where any file is a route need the broad form: Astro [\"*.astro\"], Nuxt [\"*.vue\"]. Files under components/, layouts/ or an underscore-prefixed folder are always excluded."
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "properties": {
+        "component": { "type": "array", "items": { "type": "string" }, "description": "e.g. [\".tsx\"] or [\".vue\", \".ts\"] or [\".svelte\", \".ts\"] or [\".astro\", \".ts\"]." },
+        "style": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "bindings": {
+      "type": "object",
+      "description": "The concrete package or API this project uses for each capability. Rules and skills read these instead of naming a framework.",
+      "properties": {
+        "styling": { "type": ["string", "null"], "examples": ["tailwind4", "tailwind3", "css-modules", "vanilla-extract", "plain-css"] },
+        "motion": { "type": ["string", "null"], "description": "Spring-physics motion package. See obsidian/frontend/motion-bindings.md." },
+        "textMotion": { "type": ["string", "null"], "description": "Text-animation package, or 'recipe' when the stack has none and the split+stagger recipe is used." },
+        "smoothScroll": { "type": ["string", "null"], "examples": ["lenis", null] },
+        "state": { "type": ["string", "null"] },
+        "validation": { "type": ["string", "null"], "examples": ["zod", "valibot"] },
+        "image": { "type": ["string", "null"], "description": "Image component/import, or 'native' when the stack has none." },
+        "link": { "type": ["string", "null"], "description": "Client-side link component, or 'native' for plain <a>." },
+        "router": { "type": ["string", "null"] },
+        "metadata": { "type": ["string", "null"], "description": "How head/meta is produced, e.g. next-metadata, svelte-head, nuxt-useHead, astro-head, react-helmet, manual." },
+        "envPublicPrefix": { "type": ["string", "null"], "description": "Prefix that exposes a variable to the browser, e.g. NEXT_PUBLIC_, VITE_, PUBLIC_, NUXT_PUBLIC_. Anything without it is server-only." }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "description": "What the framework can do. Checks that do not apply are skipped rather than failed.",
+      "properties": {
+        "ssr": { "type": ["boolean", "null"] },
+        "serverComponents": { "type": ["boolean", "null"] },
+        "fileRouting": { "type": ["boolean", "null"] },
+        "apiRoutes": { "type": ["boolean", "null"] },
+        "imageOptimization": { "type": ["boolean", "null"] },
+        "metadataApi": { "type": ["boolean", "null"] },
+        "islands": { "type": ["boolean", "null"] }
+      }
+    },
+    "conventions": {
+      "type": "object",
+      "description": "Kit conventions that can be switched off when the host project genuinely conflicts. Turning one off needs an ADR.",
+      "properties": {
+        "routesDelegateToViews": { "type": "boolean" },
+        "namedExports": { "type": "boolean" },
+        "serverFirst": { "type": "boolean" },
+        "tokenTiers": { "type": "boolean" }
+      }
+    },
+    "commands": {
+      "type": "object",
+      "description": "Verbatim shell commands, package-manager included. verify.sh and every skill run these instead of guessing.",
+      "properties": {
+        "install": { "type": ["string", "null"] },
+        "dev": { "type": ["string", "null"] },
+        "build": { "type": ["string", "null"] },
+        "start": { "type": ["string", "null"] },
+        "lint": { "type": ["string", "null"] },
+        "typecheck": { "type": ["string", "null"] },
+        "test": { "type": ["string", "null"] }
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Anything a later agent must know that the fields cannot express — a non-standard layout, a deliberate deviation, a framework quirk found during /adapt."
+    }
+  }
+}
